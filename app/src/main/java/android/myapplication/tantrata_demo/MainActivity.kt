@@ -1,9 +1,14 @@
 package android.myapplication.tantrata_demo
 
 import CustomAdapter
+import android.app.ProgressDialog
+import android.content.Context
 import android.icu.lang.UCharacter.VerticalOrientation
 import android.myapplication.tantrata_demo.ModelClass.Data
 import android.myapplication.tantrata_demo.ModelClass.DataX
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,18 +33,25 @@ class MainActivity : AppCompatActivity() {
     private var layoutManager: GridLayoutManager? = null
     lateinit var recyclerview : RecyclerView
     var count : Int = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // launching a new coroutin
 
-        getViral()
-        var edittext : EditText= findViewById(R.id.edittext)
-        var search :ImageButton = findViewById(R.id.search)
-        search.setOnClickListener(View.OnClickListener {
-            val query: String = edittext.text.toString().trim().lowercase()
-            getmyData(query)
-        })
+        if (checkForInternet(this)) {
+            getViral()
+            var edittext : EditText= findViewById(R.id.edittext)
+            var search :ImageButton = findViewById(R.id.search)
+            search.setOnClickListener(View.OnClickListener {
+                val query: String = edittext.text.toString().trim().lowercase()
+                getmyData(query)
+            })
+        } else {
+            Toast.makeText(this, "No Internet available", Toast.LENGTH_SHORT).show()
+        }
+
+
 
        // Log.d("Size of Arraylist", dataX.size.toString())
     }
@@ -50,10 +62,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.change_layout -> {
-                if (layoutManager?.spanCount == 1) {
+                if (adapter!=null&&layoutManager?.spanCount == 1) {
                     layoutManager?.spanCount = 3
                     item.title = "list"
-                } else {
+                } else if(adapter!=null){
                     layoutManager?.spanCount = 1
                     item.title = "grid"
                 }
@@ -65,6 +77,11 @@ class MainActivity : AppCompatActivity() {
     private fun getViral (){
         val Api = RetrofitHelper.getInstance2().create(APIinterface::class.java)
         val retrofidata = Api.getviral()
+        val progressDialog = ProgressDialog(this@MainActivity)
+        progressDialog.setTitle("Loading.......")
+        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.show()
+
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
             override fun onResponse(
                 call: Call<Data?>,
@@ -94,6 +111,8 @@ class MainActivity : AppCompatActivity() {
                     // Toast.makeText(this@MainActivity,responsebody.data.size.toString(), Toast.LENGTH_SHORT).show()
 
                     adapter.notifyDataSetChanged()
+                    progressDialog.hide()
+
                     Log.d("Atharv", responsebody.toString())
                     Log.d("Size of Arraylist", dataX.size.toString())
 
@@ -104,12 +123,17 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<Data?>, t: Throwable) {
             }
-        })
+        }
+        )
     }
 
     private fun getmyData (query : String){
         val Api = RetrofitHelper.getInstance().create(APIinterface::class.java)
         val retrofidata = Api.getData(query)
+        val progressDialog = ProgressDialog(this@MainActivity)
+        progressDialog.setTitle("Loading.......")
+        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.show()
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
             override fun onResponse(
                 call: Call<Data?>,
@@ -139,6 +163,8 @@ class MainActivity : AppCompatActivity() {
                    // Toast.makeText(this@MainActivity,responsebody.data.size.toString(), Toast.LENGTH_SHORT).show()
 
                     adapter.notifyDataSetChanged()
+                    progressDialog.hide()
+
                     Log.d("Atharv", responsebody.data.get(1).title)
                     Log.d("Size of Arraylist", dataX.size.toString())
 
@@ -152,3 +178,45 @@ class MainActivity : AppCompatActivity() {
         })
     }
     }
+
+
+private fun checkForInternet(context: Context): Boolean {
+
+    // register activity with the connectivity manager service
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    // if the android version is equal to M
+    // or greater we need to use the
+    // NetworkCapabilities to check what type of
+    // network has the internet connection
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+        // Returns a Network object corresponding to
+        // the currently active default data network.
+        val network = connectivityManager.activeNetwork ?: return false
+
+        // Representation of the capabilities of an active network.
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return when {
+            // Indicates this network uses a Wi-Fi transport,
+            // or WiFi has network connectivity
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+            // Indicates this network uses a Cellular transport. or
+            // Cellular has network connectivity
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+            // else return false
+            else -> false
+        }
+    } else {
+        // if the android version is below M
+        @Suppress("DEPRECATION") val networkInfo =
+            connectivityManager.activeNetworkInfo ?: return false
+        @Suppress("DEPRECATION")
+        return networkInfo.isConnected
+    }
+
+
+}
