@@ -12,4 +12,7 @@ External Libraries used:-
 1-This applcation uses retrofit for fetching data from APIs
 2-Glide library is being used for fetching images from URLs given in JSON resposnse.
 
+Note:- Sample screenshots for reference:-
+- https://github.com/atharavmishra/TantrataDemo/blob/master/Screenshot_2023-01-02-00-14-45-71_e50cc5d4d69e01a57b2468dc29c93f8e.jpg
+- https://github.com/atharavmishra/TantrataDemo/blob/master/Screenshot_2023-01-02-00-14-51-06_e50cc5d4d69e01a57b2468dc29c93f8e.jpg
 
