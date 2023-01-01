@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
         val Api = RetrofitHelper.getInstance2().create(APIinterface::class.java)
         val retrofidata = Api.getviral()
 
-//        var spinner:ProgressBar = findViewById(R.id.progressBar1)
-//        spinner.setVisibility(View.VISIBLE);
+        var spinner:ProgressBar = findViewById(R.id.progressBar1)
+        spinner.setVisibility(View.VISIBLE);
 
 
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                     // Toast.makeText(this@MainActivity,responsebody.data.size.toString(), Toast.LENGTH_SHORT).show()
 
                     adapter.notifyDataSetChanged()
-//                    spinner.setVisibility(View.GONE);
+                    spinner.setVisibility(View.GONE);
 
                     Log.d("Atharv", responsebody.toString())
                     Log.d("Size of Arraylist", dataX.size.toString())
