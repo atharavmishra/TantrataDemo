@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: CustomAdapter
     private var layoutManager: GridLayoutManager? = null
     lateinit var recyclerview : RecyclerView
-    var count : Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,10 +77,10 @@ class MainActivity : AppCompatActivity() {
     private fun getViral (){
         val Api = RetrofitHelper.getInstance2().create(APIinterface::class.java)
         val retrofidata = Api.getviral()
-        val progressDialog = ProgressDialog(this@MainActivity)
-        progressDialog.setTitle("Loading.......")
-        progressDialog.setMessage("Application is loading, please wait")
-        progressDialog.show()
+
+//        var spinner:ProgressBar = findViewById(R.id.progressBar1)
+//        spinner.setVisibility(View.VISIBLE);
+
 
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
             override fun onResponse(
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                     // Toast.makeText(this@MainActivity,responsebody.data.size.toString(), Toast.LENGTH_SHORT).show()
 
                     adapter.notifyDataSetChanged()
-                    progressDialog.hide()
+//                    spinner.setVisibility(View.GONE);
 
                     Log.d("Atharv", responsebody.toString())
                     Log.d("Size of Arraylist", dataX.size.toString())
@@ -131,9 +131,10 @@ class MainActivity : AppCompatActivity() {
         val Api = RetrofitHelper.getInstance().create(APIinterface::class.java)
         val retrofidata = Api.getData(query)
         val progressDialog = ProgressDialog(this@MainActivity)
-        progressDialog.setTitle("Loading.......")
+        progressDialog.setTitle("Fetching data")
         progressDialog.setMessage("Application is loading, please wait")
         progressDialog.show()
+
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
             override fun onResponse(
                 call: Call<Data?>,
