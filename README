@@ -1,1 +1,15 @@
+Hi, This project is a part of assignment for tantrata solutions pvt. ltd.
+
+A brief what this application does:- This application searches for top viral images of the week from the Imgur gallery and displays them in a grid and it also 
+allows user to search their query, user can change the layout from grid to list and vice versa.Each post/image has its own layout with some information like date 
+and time of post, number of images with that post and title of the image.
+
+APIs used in this application:- 
+1- https://api.imgur.com/3/gallery/hot/viral/0.json :- This api gets the most viral posts and it doesn't use any authentication
+2- https://api.imgur.com/3/gallery/search :- This api takes the query as search parameter and returns the results and it asks for basic authorization which takes CLIENT_ID as parameter
+
+External Libraries used:- 
+1-This applcation uses retrofit for fetching data from APIs
+2-Glide library is being used for fetching images from URLs given in JSON resposnse.
+
 
