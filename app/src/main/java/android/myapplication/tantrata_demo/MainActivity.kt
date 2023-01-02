@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         val retrofidata = Api.getviral()
 
         var spinner:ProgressBar = findViewById(R.id.progressBar1)
-        spinner.setVisibility(View.VISIBLE);
 
 
         retrofidata.enqueue(object : retrofit2.Callback<Data?> {
