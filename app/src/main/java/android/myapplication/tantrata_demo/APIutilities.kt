@@ -16,6 +16,7 @@ object RetrofitHelper {
             // convert JSON object to Java object
             .build()
     }
+
     fun getInstance2(): Retrofit {
         return Retrofit.Builder().baseUrl(baseUrl2)
             .addConverterFactory(GsonConverterFactory.create())
