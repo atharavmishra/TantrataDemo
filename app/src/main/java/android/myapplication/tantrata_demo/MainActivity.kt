@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //This function will load the viral images on Landing Page
     private fun getViral (){
         val Api = RetrofitHelper.getInstance2().create(APIinterface::class.java)
         val retrofidata = Api.getviral()
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
         )
     }
-
+// This function searches the query entered by the user
     private fun getmyData (query : String){
         val Api = RetrofitHelper.getInstance().create(APIinterface::class.java)
         val retrofidata = Api.getData(query)

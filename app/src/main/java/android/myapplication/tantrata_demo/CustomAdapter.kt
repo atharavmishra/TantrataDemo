@@ -40,9 +40,9 @@ class CustomAdapter(val context : Context, private val dataSet: List<DataX>, pri
         DETAILED
     }
 
-    // Create new views (invoked by the layout manager)
+    // Creates new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
+        // Creates a new view, which defines the UI of the list item
         return when (viewType){
             ViewType.DETAILED.ordinal -> ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.recyclerview, viewGroup, false))
@@ -57,7 +57,7 @@ class CustomAdapter(val context : Context, private val dataSet: List<DataX>, pri
         else ViewType.SMALL.ordinal
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.textview.text = dataSet[position].title.toString()
         if(dataSet[position].images!=null) {
@@ -83,11 +83,11 @@ class CustomAdapter(val context : Context, private val dataSet: List<DataX>, pri
         }
         Log.d("customadapter",dataSet[position].title)
 
-        // Get element from your dataset at this position and replace the
+        // Gets element from your dataset at this position and replace the
         // contents of the view with that element
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Returns the size dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
 }
