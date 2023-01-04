@@ -46,7 +46,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     }
 
 
-    // Log.d("Size of Arraylist", dataX.size.toString())
+      // Log.d("Size of Arraylist", dataX.size.toString())
 }
 
 override fun onCreateOptionsMenu(menu: Menu?): Boolean {
