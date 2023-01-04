@@ -143,13 +143,8 @@ private fun getmyData(query: String) {
             response: Response<Data?>
         ) {
             val responsebody = response.body()
-            if (responsebody != null) {
-                Toast.makeText(
-                    this@MainActivity,
-                    responsebody.data.size.toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+
+
 
             if (responsebody != null) {
                 recyclerview = findViewById<RecyclerView>(R.id.recyclerviewlist)
